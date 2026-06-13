@@ -1,0 +1,595 @@
+/* =========================================
+   SentimentScope — style.css
+   Aesthetic: Dark Data-Science / Editorial
+   ========================================= */
+
+:root {
+  --bg:          #0d1117;
+  --surface:     #161b22;
+  --surface-2:   #1e2530;
+  --border:      rgba(255,255,255,0.08);
+  --accent:      #58d9c2;
+  --accent-soft: rgba(88,217,194,0.12);
+  --positive:    #2ecc71;
+  --positive-bg: rgba(46,204,113,0.1);
+  --negative:    #e74c3c;
+  --negative-bg: rgba(231,76,60,0.1);
+  --neutral:     #f0c040;
+  --neutral-bg:  rgba(240,192,64,0.1);
+  --text:        #e6edf3;
+  --text-muted:  #8b949e;
+  --radius:      14px;
+  --radius-sm:   8px;
+  --shadow:      0 4px 32px rgba(0,0,0,0.5);
+  --shadow-sm:   0 2px 12px rgba(0,0,0,0.3);
+  --font-body:   'DM Sans', sans-serif;
+  --font-display:'DM Serif Display', serif;
+  --font-mono:   'DM Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-weight: 400;
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* ── Background grid ── */
+.bg-grid {
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(88,217,194,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(88,217,194,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Container ── */
+.container {
+  position: relative;
+  z-index: 1;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 48px 24px 64px;
+}
+
+/* ── Header ── */
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+  animation: fadeDown 0.6s ease both;
+}
+
+.header-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border: 1px solid rgba(88,217,194,0.3);
+  border-radius: 100px;
+  padding: 4px 14px;
+  margin-bottom: 16px;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 6vw, 3.8rem);
+  line-height: 1.1;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  margin-bottom: 12px;
+}
+
+.accent { color: var(--accent); }
+
+.subtitle {
+  font-size: 1rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+.subtitle em {
+  color: var(--accent);
+  font-style: normal;
+  font-weight: 500;
+}
+
+/* ── Cards ── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  box-shadow: var(--shadow);
+}
+
+/* ── Input Card ── */
+.input-card {
+  animation: fadeUp 0.6s 0.1s ease both;
+}
+
+.input-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: var(--text);
+  margin-bottom: 12px;
+  letter-spacing: 0.01em;
+}
+
+.label-icon { font-size: 1rem; }
+
+.review-textarea {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  padding: 14px 16px;
+  resize: vertical;
+  min-height: 140px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+
+.review-textarea::placeholder { color: var(--text-muted); }
+
+.review-textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(88,217,194,0.1);
+}
+
+/* ── Example row ── */
+.example-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 18px 0 22px;
+}
+
+.example-hint {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  margin-right: 4px;
+}
+
+.example-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 7px 14px;
+  border-radius: 100px;
+  border: 1px solid;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  background: transparent;
+}
+
+.example-btn:hover { transform: translateY(-1px); }
+.example-btn:active { transform: translateY(0); }
+
+.positive-btn {
+  color: var(--positive);
+  border-color: rgba(46,204,113,0.4);
+}
+.positive-btn:hover { background: var(--positive-bg); }
+
+.negative-btn {
+  color: var(--negative);
+  border-color: rgba(231,76,60,0.4);
+}
+.negative-btn:hover { background: var(--negative-bg); }
+
+.btn-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.positive-btn .btn-dot { background: var(--positive); }
+.negative-btn .btn-dot { background: var(--negative); }
+
+/* ── Predict Button ── */
+.predict-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: var(--accent);
+  color: #0a1410;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  padding: 14px 28px;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  box-shadow: 0 4px 20px rgba(88,217,194,0.25);
+}
+
+.predict-btn:hover {
+  background: #6de7d2;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(88,217,194,0.35);
+}
+
+.predict-btn:active { transform: translateY(0); }
+
+.predict-icon {
+  font-size: 1.1rem;
+  display: inline-block;
+  transition: transform 0.4s;
+}
+
+.predict-btn.loading .predict-icon {
+  animation: spin 0.8s linear infinite;
+}
+
+/* ── Results Section ── */
+.results-section {
+  margin-top: 32px;
+  animation: fadeUp 0.5s ease both;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+
+.section-line {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ── Model Cards ── */
+.model-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 560px) {
+  .model-cards { grid-template-columns: 1fr; }
+}
+
+.model-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.3s, transform 0.3s;
+}
+
+.model-card:hover { transform: translateY(-2px); }
+
+.model-tag {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+}
+
+.model-label-row {
+  margin-bottom: 20px;
+}
+
+.model-sentiment {
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  font-weight: 400;
+  display: block;
+  line-height: 1.2;
+}
+
+/* sentiment colors */
+.sentiment-positive { color: var(--positive); }
+.sentiment-negative { color: var(--negative); }
+.sentiment-neutral  { color: var(--neutral);  }
+
+.model-card.is-positive { border-color: rgba(46,204,113,0.3); }
+.model-card.is-negative { border-color: rgba(231,76,60,0.3); }
+.model-card.is-neutral  { border-color: rgba(240,192,64,0.3); }
+
+/* ── Confidence bar ── */
+.confidence-block {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 10px;
+}
+
+.conf-text {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  white-space: nowrap;
+}
+
+.conf-bar-wrap {
+  height: 5px;
+  background: var(--surface-2);
+  border-radius: 100px;
+  overflow: hidden;
+}
+
+.conf-bar {
+  height: 100%;
+  width: 0%;
+  border-radius: 100px;
+  transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.conf-bar.bar-positive { background: var(--positive); }
+.conf-bar.bar-negative { background: var(--negative); }
+.conf-bar.bar-neutral  { background: var(--neutral);  }
+
+.conf-pct {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text);
+  min-width: 38px;
+  text-align: right;
+}
+
+/* ── Keywords Card ── */
+.keywords-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+}
+
+.keywords-title {
+  font-size: 0.82rem;
+  font-family: var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.kw-icon { color: var(--accent); }
+
+.keywords-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.kw-tag {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  padding: 5px 13px;
+  border-radius: 100px;
+  border: 1px solid;
+  animation: popIn 0.3s ease both;
+  cursor: default;
+  transition: transform 0.15s;
+}
+
+.kw-tag:hover { transform: scale(1.05); }
+
+.kw-positive {
+  color: var(--positive);
+  background: var(--positive-bg);
+  border-color: rgba(46,204,113,0.35);
+}
+
+.kw-negative {
+  color: var(--negative);
+  background: var(--negative-bg);
+  border-color: rgba(231,76,60,0.35);
+}
+
+.kw-neutral {
+  color: var(--neutral);
+  background: var(--neutral-bg);
+  border-color: rgba(240,192,64,0.35);
+}
+
+/* ── Footer ── */
+.footer {
+  margin-top: 48px;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  animation: fadeUp 0.6s 0.4s ease both;
+}
+
+.footer-mono {
+  font-family: var(--font-mono);
+  color: var(--accent);
+}
+
+/* ── Animations ── */
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* ───────── Comparison Card ───────── */
+.comparison-card,
+.confusion-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+  margin-top: 20px;
+}
+
+.comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.comp-label {
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.comp-value {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+/* ───────── Confusion Matrix ───────── */
+.confusion-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+  font-family: var(--font-mono);
+}
+
+.confusion-table th,
+.confusion-table td {
+  border: 1px solid var(--border);
+  padding: 10px;
+  text-align: center;
+}
+
+.confusion-table th {
+  background: var(--surface-2);
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+
+/* ───── Metrics ───── */
+.metrics-card,
+.graph-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+  margin-top: 20px;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+}
+
+.metric-box {
+  background: var(--surface-2);
+  padding: 16px;
+  border-radius: var(--radius-sm);
+  text-align: center;
+}
+
+.metric-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.metric-value {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+/* Toggle */
+.toggle-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.toggle-btn {
+  padding: 6px 14px;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.toggle-btn.active {
+  background: var(--accent);
+  color: #000;
+}
+
+/* Graph */
+.graph-card canvas {
+  width: 100%;
+  max-height: 300px;
+  margin-top: 20px;
+}
+
+.graph-card canvas + canvas {
+  margin-top: 60px;   /* adds big gap between charts */
+}
+
+.graph-subtitle {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-top: 40px;
+  margin-bottom: 10px;
+}

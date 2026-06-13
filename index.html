@@ -1,0 +1,198 @@
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SentimentScope — Review Analyzer</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- Background grid -->
+  <div class="bg-grid"></div>
+
+  <div class="container">
+
+    <!-- Header -->
+    <header class="header">
+    
+      <h1 class="title">Sentiment<span class="accent">Scope</span></h1>
+      <p class="subtitle">Online Customer Review Sentiment Analysis<br/>using <em>Naive Bayes</em> &amp; <em>Logistic Regression</em></p>
+    </header>
+
+    <!-- Input Section -->
+    <section class="card input-card">
+      <label class="input-label" for="review-input">
+        <span class="label-icon">✍</span> Enter a Product Review
+      </label>
+      <textarea
+        id="review-input"
+        class="review-textarea"
+        placeholder="Type or paste a customer review here…"
+        rows="6"
+      ></textarea>
+
+      <div class="example-row">
+        <span class="example-hint">Try an example →</span>
+        <button class="example-btn positive-btn" onclick="fillExample('positive')">
+          <span class="btn-dot"></span> Example Positive Review
+        </button>
+        <button class="example-btn negative-btn" onclick="fillExample('negative')">
+          <span class="btn-dot"></span> Example Negative Review
+        </button>
+      </div>
+
+      <button class="predict-btn" onclick="predictSentiment()">
+        <span class="predict-icon">⟳</span>
+        Predict Sentiment
+      </button>
+    </section>
+
+    <!-- Results Section -->
+    <section class="results-section" id="results" style="display:none;">
+
+      <h2 class="section-title">
+        <span class="section-line"></span>
+        Model Predictions
+        <span class="section-line"></span>
+      </h2>
+
+      <div class="model-cards">
+
+        <!-- Logistic Regression Card -->
+        <div class="model-card" id="lr-card">
+          <div class="model-tag">Logistic Regression</div>
+          <div class="model-label-row">
+            <span class="model-sentiment" id="lr-sentiment">—</span>
+          </div>
+          <div class="confidence-block">
+            <span class="conf-text">Confidence</span>
+            <div class="conf-bar-wrap">
+              <div class="conf-bar" id="lr-bar"></div>
+            </div>
+            <span class="conf-pct" id="lr-pct">—</span>
+          </div>
+        </div>
+
+        <!-- Naive Bayes Card -->
+        <div class="model-card" id="nb-card">
+          <div class="model-tag">Naive Bayes</div>
+          <div class="model-label-row">
+            <span class="model-sentiment" id="nb-sentiment">—</span>
+          </div>
+          <div class="confidence-block">
+            <span class="conf-text">Confidence</span>
+            <div class="conf-bar-wrap">
+              <div class="conf-bar" id="nb-bar"></div>
+            </div>
+            <span class="conf-pct" id="nb-pct">—</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Comparison Section -->
+      <div class="comparison-card">
+        <h3 class="keywords-title">
+          <span class="kw-icon">⟁</span> Model Comparison
+        </h3>
+
+        <div class="comparison-grid">
+          <div>
+            <div class="comp-label">Confidence Difference</div>
+            <div class="comp-value" id="confidence-diff">—</div>
+          </div>
+
+          <div>
+            <div class="comp-label">Analysis Time</div>
+            <div class="comp-value" id="analysis-time">—</div>
+          </div>
+
+          <div>
+            <div class="comp-label">Model Agreement</div>
+            <div class="comp-value" id="model-agreement">—</div>
+          </div>
+
+          <div>
+            <div class="comp-label">Higher Confidence</div>
+            <div class="comp-value" id="higher-confidence">—</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comparison-card">
+        <h3 class="keywords-title">
+          <span class="kw-icon">✔</span> Prediction Summary
+        </h3>
+        <div class="comparison-grid">
+          <div>
+            <div class="comp-label">Correct Predictions</div>
+            <div class="comp-value" id="correct-count">—</div>
+          </div>
+
+          <div>
+            <div class="comp-label">Incorrect Predictions</div>
+            <div class="comp-value" id="incorrect-count">—</div>
+          </div>
+
+          <div>
+            <div class="comp-label">Total Test Samples</div>
+            <div class="comp-value" id="total-count">—</div>
+          </div>
+        </div>
+        <p id="prediction-summary" style="color:#8b949e; line-height:1.6; margin-top:16px;">
+          —
+        </p>
+      </div>
+
+      <div class="confusion-card">
+        <h3 class="keywords-title">
+          <span class="kw-icon">▦</span> Confusion Matrix
+        </h3>
+
+        <div class="toggle-row">
+          <button class="toggle-btn active" onclick="showMatrix('lr')" id="lr-toggle">Logistic Regression</button>
+          <button class="toggle-btn" onclick="showMatrix('nb')" id="nb-toggle">Naive Bayes</button>
+        </div>
+
+        <table class="confusion-table">
+          <thead id="confusion-matrix-head"></thead>
+          <tbody id="confusion-matrix-body"></tbody>
+        </table>
+      </div>
+
+      <div class="graph-card">
+        <h3 class="keywords-title">
+          <span class="kw-icon">⬈</span> Model Performance Visualization
+        </h3>
+
+        <h4 class="graph-subtitle">Performance Metrics</h4>
+        <canvas id="metricsChart"></canvas>
+
+        <h4 class="graph-subtitle">Model Confidence Comparison</h4>
+        <canvas id="confidenceChart"></canvas>
+      </div>
+
+      <div class="comparison-card">
+        <h3 class="keywords-title">
+          <span class="kw-icon">📊</span> Model Conclusion
+        </h3>
+        <p id="model-conclusion" style="color:#8b949e; line-height:1.6;">
+          —
+        </p>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+     
+      &nbsp;·&nbsp; Naive Bayes &amp; Logistic Regression &nbsp;·&nbsp;
+      
+    </footer>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
