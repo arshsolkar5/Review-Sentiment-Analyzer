@@ -481,6 +481,12 @@ body {
   gap: 16px;
 }
 
+.summary-text {
+  color: #8b949e;
+  line-height: 1.7;
+  margin-top: 16px;
+}
+
 .comp-label {
   font-size: 0.75rem;
   font-family: var(--font-mono);

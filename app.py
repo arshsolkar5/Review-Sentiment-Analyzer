@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 import joblib
 import re
@@ -37,8 +37,21 @@ ensure_nltk_resource("tokenizers/punkt_tab", "punkt_tab")
 ensure_nltk_resource("corpora/stopwords", "stopwords")
 ensure_nltk_resource(["corpora/wordnet", "corpora/wordnet.zip"], "wordnet")
 lemmatizer = WordNetLemmatizer()
-stop_words = set(stopwords.words('english'))
-stop_words.difference_update({'not', 'no', 'never'})
+
+def load_stop_words():
+    try:
+        words = set(stopwords.words('english'))
+    except LookupError:
+        words = {
+            "a", "an", "and", "are", "as", "at", "be", "by", "for",
+            "from", "has", "he", "in", "is", "it", "its", "of",
+            "on", "that", "the", "to", "was", "were", "will", "with"
+        }
+    words.difference_update({"not", "no", "never"})
+    return words
+
+
+stop_words = load_stop_words()
 model_metrics = None
 
 # Load all assets saved from your notebook
@@ -57,8 +70,22 @@ def clean_text(text):
     text = emoji.demojize(text)
     text = text.replace(':', ' ').replace('_', ' ').lower()
     text = re.sub(r'[^a-z\s]', '', text)
-    tokens = word_tokenize(text)
-    return ' '.join([lemmatizer.lemmatize(w) for w in tokens if w not in stop_words])
+
+    try:
+        tokens = word_tokenize(text)
+    except LookupError:
+        tokens = text.split()
+
+    cleaned_tokens = []
+    for token in tokens:
+        if token in stop_words:
+            continue
+        try:
+            cleaned_tokens.append(lemmatizer.lemmatize(token))
+        except Exception:
+            cleaned_tokens.append(token)
+
+    return ' '.join(cleaned_tokens)
 
 def load_data(file_path):
     for encoding in ("utf-8", "utf-8-sig", "cp1252", "latin1"):
@@ -231,11 +258,7 @@ except Exception as e:
 
 @app.route("/")
 def home():
-    return send_from_directory(".", "index.html")
-
-@app.route("/<path:filename>")
-def static_files(filename):
-    return send_from_directory(".", filename)
+    return render_template("index.html")
 
 @app.route("/metrics", methods=["GET"])
 def metrics():

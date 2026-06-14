@@ -1,0 +1,7 @@
+Flask
+Flask-Cors
+joblib
+emoji
+nltk
+scikit-learn
+pandas
